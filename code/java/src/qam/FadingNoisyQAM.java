@@ -4,7 +4,7 @@
  * Created on 13 September 2007, 18:08
  */
 
-package pubsim.qam;
+package qam;
 
 import pubsim.SignalGenerator;
 import java.util.Random;

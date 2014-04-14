@@ -4,12 +4,10 @@
  * Created on 27 November 2007, 11:20
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
 import pubsim.Complex;
-import pubsim.qam.*;
-import pubsim.qam.pat.PATSymbol;
-import pubsim.SignalGenerator;
+import qam.*;
 
 /**
  * A fading noisy M^2-ary QAM symbol with a single pilot symbol.  The pilot

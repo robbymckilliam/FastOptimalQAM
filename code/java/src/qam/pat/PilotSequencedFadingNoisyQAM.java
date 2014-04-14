@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.qam.pat;
+package qam.pat;
 
 import pubsim.Complex;
 import pubsim.SignalGenerator;
-import pubsim.qam.FadingNoisyQAM;
+import qam.FadingNoisyQAM;
 
 /**
  * Returns a set of QAM symbols that have each been translated

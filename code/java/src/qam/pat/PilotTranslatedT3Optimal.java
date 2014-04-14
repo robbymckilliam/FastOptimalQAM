@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.qam.pat;
+package qam.pat;
 
 import pubsim.Complex;
-import pubsim.qam.*;
+import qam.T3OptimalV3;
+import qam.QAMReceiver;
 import pubsim.VectorFunctions;
 
 /**
@@ -31,7 +27,7 @@ public class PilotTranslatedT3Optimal extends T3OptimalV3
         return PAT;
     }
     
-    /** Overide Nearest Neigbour to work with the pilot translation */
+    /** Ovveride Nearest Neigbour to work with the pilot translation */
     @Override
     protected void NN(double[] x, double[] y){
         for(int i = 0; i < x.length; i+=2){

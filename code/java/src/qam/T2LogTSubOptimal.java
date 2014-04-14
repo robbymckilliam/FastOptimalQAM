@@ -4,10 +4,9 @@
  * Created on 1 October 2007, 09:01
  */
 
-package pubsim.qam;
+package qam;
 
 import java.util.TreeMap;
-import pubsim.VectorFunctions;
 import pubsim.Complex;
 
 /**

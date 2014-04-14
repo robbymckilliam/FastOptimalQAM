@@ -4,9 +4,7 @@
  * Created on 27 September 2007, 13:58
  */
 
-package pubsim.qam;
-
-import pubsim.VectorFunctions;
+package qam;
 
 /**
  * Contains functions relavant to most NonCoherentReceivers

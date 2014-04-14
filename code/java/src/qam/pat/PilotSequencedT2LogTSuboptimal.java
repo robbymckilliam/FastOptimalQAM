@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package pubsim.qam.pat;
+package qam.pat;
 
 import java.util.Arrays;
 import pubsim.Complex;
 import pubsim.IndexedDouble;
 import pubsim.VectorFunctions;
-import pubsim.qam.QAMReceiver;
-import pubsim.qam.T2LogTSubOptimalV3;
+import qam.QAMReceiver;
+import qam.T2LogTSubOptimalV3;
 
 /**
  * Dan's suboptimal T2LogT noncoherent reciever that is modified to work

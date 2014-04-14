@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.pat;
 
-package pubsim.qam.pat;
-
-import pubsim.qam.pat.PilotTranslatedFadingNoisyQAM;
 import junit.framework.TestCase;
 
 /**

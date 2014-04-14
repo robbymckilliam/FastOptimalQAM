@@ -4,9 +4,10 @@
  * Created on 27 November 2007, 11:36
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
-import pubsim.qam.*;
+import qam.QAMReceiver;
+import qam.T2LogTOptimalV3;
 import java.util.Arrays;
 import pubsim.Complex;
 import pubsim.VectorFunctions;

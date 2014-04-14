@@ -5,9 +5,8 @@
  * Created on 27 September 2007, 14:18
  */
 
-package pubsim.qam;
+package qam;
 
-import pubsim.qam.NonCoherentReceiver;
 import junit.framework.*;
 import pubsim.VectorFunctions;
 

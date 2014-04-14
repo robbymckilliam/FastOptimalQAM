@@ -1,9 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package pubsim.qam.hex.ambiguity;
+package qam.hex.ambiguity;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,7 +8,7 @@ import pubsim.lattices.Hexagonal;
 import pubsim.lattices.util.IntegerVectors;
 import pubsim.EisensteinInteger;
 import pubsim.lattices.util.PointInSphere;
-import pubsim.qam.hex.HexagonalCode;
+import qam.hex.HexagonalCode;
 
 /**
  * Class to compute an upper bound on the number of codeword errors that occur

@@ -5,12 +5,9 @@
  * Created on 18 September 2007, 13:33
  */
 
-package pubsim.qam;
+package qam;
 
-import pubsim.qam.FadingNoisyQAM;
-import pubsim.qam.T2LogTOptimal;
 import junit.framework.*;
-import java.util.TreeMap;
 import pubsim.VectorFunctions;
 import pubsim.distributions.GaussianNoise;
 

@@ -1,18 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.hex;
 
-package pubsim.qam.hex;
-
-import java.util.Map.Entry;
 import java.util.TreeMap;
 import pubsim.lattices.Hexagonal;
 import pubsim.Point2;
-import pubsim.Complex;
 import pubsim.VectorFunctions;
-import static pubsim.qam.NonCoherentReceiver.createPlane;
-import static pubsim.qam.NonCoherentReceiver.toRealImag;
+import static qam.NonCoherentReceiver.createPlane;
 
 /**
  * Noncoherent reciever for Hexagonal QAM.  Assumes hexagonal constellation

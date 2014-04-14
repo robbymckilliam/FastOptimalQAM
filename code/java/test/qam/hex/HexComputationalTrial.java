@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.hex;
 
-package pubsim.qam.hex;
-
-import pubsim.qam.hex.BruteForceHexReciever;
-import pubsim.qam.hex.HexReciever;
-import pubsim.qam.hex.FadingNoisyHex;
 import pubsim.distributions.GaussianNoise;
 import java.io.BufferedWriter;
 import java.io.File;

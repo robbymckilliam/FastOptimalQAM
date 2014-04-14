@@ -4,7 +4,7 @@
  * Created on 11 October 2007, 11:53
  */
 
-package pubsim.qam;
+package qam;
 
 import java.util.Arrays;
 import pubsim.IndexedDouble;

@@ -1,22 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.hex;
 
-package pubsim.qam.hex;
-
-import pubsim.qam.hex.FadingNoiseHexNoAmbiguity;
-import pubsim.qam.hex.RadialLinesNoAmbiguity;
-import pubsim.qam.hex.FadingNoisyHex;
-import pubsim.qam.hex.RadialLinesReciever;
 import pubsim.distributions.GaussianNoise;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import pubsim.Point2;
 import pubsim.VectorFunctionsTest;
 import static pubsim.VectorFunctions.print;
 

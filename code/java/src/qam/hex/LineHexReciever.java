@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.hex;
 
-package pubsim.qam.hex;
-
-import pubsim.lattices.LatticeAndNearestPointAlgorithmInterface;
 import pubsim.Complex;
 import pubsim.Point2;
 import pubsim.VectorFunctions;

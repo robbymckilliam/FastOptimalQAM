@@ -4,7 +4,7 @@
  * Created on 18 January 2008, 15:03
  */
 
-package pubsim.qam.crb;
+package qam.crb;
 
 import pubsim.VectorFunctions;
 

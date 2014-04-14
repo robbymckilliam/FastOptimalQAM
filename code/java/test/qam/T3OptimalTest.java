@@ -5,10 +5,8 @@
  * Created on 27 September 2007, 15:30
  */
 
-package pubsim.qam;
+package qam;
 
-import pubsim.qam.T3Optimal;
-import pubsim.qam.FadingNoisyQAM;
 import junit.framework.*;
 import pubsim.VectorFunctions;
 import pubsim.distributions.GaussianNoise;

@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.pat;
 
-package pubsim.qam.pat;
-
-import pubsim.qam.pat.PilotTranslatedT3Optimal;
-import pubsim.qam.pat.PilotTranslatedT2LogTSuboptimal;
-import pubsim.qam.pat.PilotTranslatedFadingNoisyQAM;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

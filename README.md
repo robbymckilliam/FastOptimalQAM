@@ -9,4 +9,6 @@ that describes algorithms for fast least squares noncoherent QAM detection.  The
 
 bash build.sh
 
-will compile the latex file qamreceiver.tex.  The source code is contained in the code/java/ directory.
+will compile the latex file qamreceiver.tex.  The source code is contained in the code/java/ directory.  This directory also contains the source code for the paper
+
+Robby G. McKilliam, Daniel J. Ryan, I. Vaughan L. Clarkson and Iain B. Collings. "Block noncoherent detection of hexagonal QAM". Australian Communications Theory Workshop. Canberra, Australia, 2010. 

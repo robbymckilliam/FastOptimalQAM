@@ -4,7 +4,7 @@
  * Created on 17 September 2007, 13:45
  */
 
-package pubsim.qam;
+package qam;
 
 import java.io.Serializable;
 

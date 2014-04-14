@@ -4,10 +4,10 @@
  * Created on 27 November 2007, 11:35
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
 import pubsim.Complex;
-import pubsim.qam.*;
+import qam.QAMReceiver;
 
 /**
  *

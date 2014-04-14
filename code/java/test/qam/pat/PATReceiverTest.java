@@ -5,10 +5,8 @@
  * Created on 27 November 2007, 12:50
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
-import pubsim.qam.pat.PilotAssistedFadingNoisyQAM;
-import pubsim.qam.pat.PATReceiver;
 import pubsim.distributions.GaussianNoise;
 
 import junit.framework.*;

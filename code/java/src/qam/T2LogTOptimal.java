@@ -4,7 +4,7 @@
  * Created on 17 September 2007, 14:10
  */
 
-package pubsim.qam;
+package qam;
 
 import java.util.TreeMap;
 import pubsim.Complex;

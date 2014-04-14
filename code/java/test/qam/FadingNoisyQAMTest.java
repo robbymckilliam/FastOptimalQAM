@@ -5,14 +5,10 @@
  * Created on 14 September 2007, 13:50
  */
 
-package pubsim.qam;
+package qam;
 
-import pubsim.qam.FadingNoisyQAM;
 import junit.framework.*;
-import pubsim.SignalGenerator;
-import pubsim.distributions.GaussianNoise;
 import pubsim.distributions.RealRandomVariable;
-import java.util.Random;
 import pubsim.VectorFunctions;
 
 /**

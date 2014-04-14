@@ -1,6 +1,5 @@
-package pubsim.qam.hex.ambiguity;
+package qam.hex.ambiguity;
 
-import pubsim.qam.hex.ambiguity.HexAmbiguityCalculator;
 import java.util.Vector;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -1,12 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package qam.pat;
 
-package pubsim.qam.pat;
-
-import pubsim.qam.*;
-import pubsim.qam.pat.PATSymbol;
+import qam.T2LogTSubOptimalV3;
+import qam.QAMReceiver;
 import java.util.Arrays;
 import pubsim.Complex;
 import pubsim.IndexedDouble;
@@ -44,7 +39,7 @@ public class PilotTranslatedT2LogTSuboptimal extends T2LogTSubOptimalV3
         return PAT;
     }
     
-    /** Overide Nearest Neigbour to work with the pilot translation */
+    /** Ovveride Nearest Neighbour to work with the pilot translation */
     @Override
     protected void NN(double[] x, double[] y){
         for(int i = 0; i < x.length; i+=2){

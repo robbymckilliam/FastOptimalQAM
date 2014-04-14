@@ -4,7 +4,7 @@
  * Created on 27 November 2007, 11:59
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
 import pubsim.Complex;
 

@@ -5,9 +5,8 @@
  * Created on 27 November 2007, 12:54
  */
 
-package pubsim.qam.pat;
+package qam.pat;
 
-import pubsim.qam.pat.PilotAssistedFadingNoisyQAM;
 import junit.framework.*;
 import pubsim.SignalGenerator;
 
