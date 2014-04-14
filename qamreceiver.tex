@@ -1,0 +1,451 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{bm}
+\usepackage{amsmath}%
+\usepackage{amsfonts}%
+\usepackage{amssymb}%
+%\usepackage{amsthm}
+\usepackage{ushort}
+\usepackage{booktabs}
+\usepackage[pdftex]{graphicx}
+%\usepackage{setspace}
+\usepackage{cite}
+\usepackage{times}
+\usepackage[normalem]{ulem}
+%\usepackage{algorithmic}
+\usepackage[figure, vlined, linesnumbered]{algorithm2e}
+%\usepackage{algorithm}
+%------------------------------------------------------------
+% Theorem like environments
+%
+\newtheorem{theorem}{Theorem}
+%\theoremstyle{plain}
+\newtheorem{acknowledgement}{Acknowledgement}
+%\newtheorem{algorithm}{Algorithm}
+\newtheorem{axiom}{Axiom}
+\newtheorem{case}{Case}
+\newtheorem{claim}{Claim}
+\newtheorem{conclusion}{Conclusion}
+\newtheorem{condition}{Condition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{corollary}{Corollary}
+\newtheorem{criterion}{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}{Notation}
+\newtheorem{problem}{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{solution}{Solution}
+\newtheorem{summary}{Summary}
+%\numberwithin{equation}{section}
+%--------------------------------------------------------
+
+\newcommand{\round}[1]{\lceil #1 \rfloor}
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\reals}{{\mathbb R}}
+\newcommand{\ints}{{\mathbb Z}}
+\newcommand{\uY}{\ushort{\bm{Y}}}
+\newcommand{\ueY}{\ushort{Y}}
+\newcommand{\uy}{\ushort{\bm{y}}}
+\newcommand{\uey}{\ushort{y}}
+\newcommand{\ux}{\ushort{\bm{x}}}
+\newcommand{\uex}{\ushort{x}}
+\newcommand{\uhx}{\ushort{\bm{\hat{x}}}}
+\newcommand{\uehx}{\ushort{\hat{x}}}
+\newcommand{\sign}[1]{\mathtt{sign}(#1)}
+
+
+
+\begin{document}
+
+\title{An Improved Algorithm for Optimal Noncoherent QAM Detection}
+
+\author{
+Robby~G.~McKilliam${}^{1}$, Daniel~J.~Ryan${}^{2,3}$, I.~Vaughan~L.~Clarkson${}^{1}$ and Iain~B.~Collings${}^{3}$
+\\ \\ \small
+${}^1$ School of Information Technology and Electrical Engineering, University of Queensland, AUSTRALIA, robertm@itee.uq.edu.au
+\\
+${}^2$School of Electrical and Information Engineering, University of Sydney, AUSTRALIA
+\\
+${}^3$ Wireless Technologies Laboratory, CSIRO ICT Centre, AUSTRALIA
+}
+
+% The paper headers
+\markboth{AusCTW}%
+{A New, Lower-Complexity Algorithm for Optimal Noncoherent QAM Detection}
+
+% make the title area
+\maketitle
+
+\begin{abstract}
+\boldmath
+Ryan \emph{et al.} \cite{Ryan2007} recently described two polynomial time algorithms for noncoherent detection of square QAM in block fading channels with additive white Gaussian noise (AWGN).  The first algorithm is optimal with respect to the generalized likelihood ratio test (GLRT) and requires $O(T^3)$ arithmetic computations, where $T$ is the block length of the noncoherent receiver.  The second algorithm requires only $O(T^2\log{T})$ arithmetic computations but is statistically suboptimal.  This paper derives a new algorithm that is optimal yet requires only $O(T^2\log{T})$ arithmetic computations.  The new algorithm has the geometric interpretation of finding the nearest codeword to a plane (2 dimensional subspace).  The nearest codeword is found by testing codewords that are near a finite number of lines formed by the intersection of the plane and the nearest neighbour boundaries of the codewords.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Noncoherent detection, lattice decoding, wireless communications.
+\end{IEEEkeywords}
+
+
+
+\section{Introduction}
+%\IEEEPARstart{N}{oncoherent}
+Noncoherent transmission of digital signals over unknown fading channels has recently received significant attention in particular for the case of the block-fading channel model \cite{Ryan2007}.  Noncoherent transmission is applicable to systems exhibiting small coherence intervals where the use of training signals would result in a significant loss in throughput.  Such situations typically occur in mobile communications.  Moreover, as indicated by Chen \emph{et al.} \cite{Chen2003} standard coherent detection is, in a sense, inherently suboptimal because it only uses the energy of a small number of pilot symbols for channel estimation, rather than also exploiting the (typically larger) energy in the unknown data symbols.
+
+Various suboptimal algorithms have been proposed for noncoherent detection for particular transmission schemes \cite{Georghiades1997,Warrier2002,Weber1978}.  These techniques, although suboptimal, are still exponential in complexity.  The challenge is to develop non coherent detection schemes with practical complexity.
+
+Recently, lattice decoding algorithms have also been applied to noncoherent detection \cite{Ling2005,Ryan2007}.  In particular Ryan \emph{et al.} \cite{Ryan2007} recently described a polynomial time algorithm for optimal noncoherent reception of square QAM in complex-valued channels with added Gaussian noise.  The algorithm is optimal with respect to the generalized likelihood ratio test (GLRT).  The algorithm has also found application for efficient beamforming in limited feedback wireless MIMO communications \cite{Ryan2007a}.  The algorithm requires $O(T^3)$ computations, where $T$ is the number of QAM symbols used by the noncoherent receiver, the \emph{block-length}.  We refer to this algorithm as the \emph{Lattice Based Optimal Detector} (LBOD).  The algorithm can be geometrically interpreted as a search for the closest codeword in angle to a plane (2 dimensional subspace).
+
+Ryan \emph{et al.} also describe a suboptimal algorithm that requires $O(T^2 \log{T})$ calculations.  We refer to the suboptimal algorithm as the \emph{Lattice Based Sub-optimal Detector} (LBSD).  The LBSD algorithm also seeks to find the closest codeword in angle to a plane, however, this is achieved by testing codewords that are close to a finite number of lines that lie in the plane and radiate from the origin.  The number of lines used is chosen arbitrarily and it is not known how many are needed to guarantee that the optimal codeword is found.  In practice, LBSD performs statistically very similarly to LBOD, provided that the number of lines used is sufficient.  LBSD is significantly more computationally efficient than LBOD.
+
+In this paper we describe an optimal algorithm that requires only $O(T^2 \log{T})$ arithmetic computations compared to the $O(T^3)$ arithmetic computations required for LBOD.  We refer to the new algorithm as the \emph{Fast Optimal Detector} (FOD).  FOD is a modification of the LBSD algorithm, where, rather than using lines that radiate from the origin, we use lines that are formed by the intersection of the plane with the nearest neighbour boundaries of the codewords.  This produces lines that criss-cross the plane.  We prove that this approach is optimal whilst still maintaining the complexity of the previous suboptimal algorithm, LBSD. We show via Monte Carlo simulations that the new algorithm is much faster than the previous optimal algorithm (LBOD) and is comparable to that of the suboptimal approach.
+
+The paper is organized into the following sections. Section \ref{system_model} describes the signal model and defines the objective function for GLRT-optimal noncoherent detection.  A geometric interpretation for the objective function is given and some limitations of the objective function in the form of ambiguities are described. Section \ref{prelim_defns} introduces useful definitions and derives some preliminary results. Section \ref{existingest} briefly describes LBOD and LBSD. Section \ref{new_algorithm} describes the new algorithm, FOD.  Its complexity is shown to be $O(T^2\log{T})$ and pseudocode is given. Section \ref{results} provides simulation results that compare FOD, LBOD and LBSD in practice.
+
+\section{System Model} \label{system_model}
+
+\subsection{Signal Model} \label{signal_model}
+Following \cite{Ryan2007} we define a codebook $C(\mathcal{X}, T )$ as the set of all possible sequences of $T$ transmitted symbols, $\bm{x} = [x_1, . . . , x_T ]^T$ such that each $x_t$ is in some constellation $\mathcal{X}$.  Here, vectors and matrices are written in bold. The vector or matrix transpose is indicated by a superscript $T$ such as $\bm{x}^T$.  This is not to be confused with the variable $T$ that is used to represent the block length of the noncoherent detector.  The $t$th element of a vector is indicated with a subscript like $x_t$ and is not written in bold.
+
+In this paper, $\mathcal{X}$ will always be the $M^2$-ary square QAM constellation.  However, the theory can be extended to rectangular QAM without difficulty.  Following \cite{Ryan2007} we define an $M^2$-ary QAM symbol to be a Gaussian (complex) integer with odd real and imaginary components in the range $[-M+1,M-1]$.
+
+We consider a codeword $\bm{x} \in C(\mathcal{X}, T )$ transmitted in the block fading AWGN channel
+\begin{equation}
+\bm{y} = h\bm{x} + \bm{\eta}
+\end{equation}
+where $h$ is a complex scalar, $\bm{\eta}$ is white complex Gaussian noise and $\bm{y}$ is the received signal.
+
+\subsection{Objective Function} \label{obj_fn}
+
+We use the underscore notation $\ux$ to denote
+\begin{equation} \label{eq_underline_operator}
+\ux = [ \text{Re}\{x_1\}, \text{Im}\{x_1\}, . . . , \text{Re}\{x_T\},  \text{Im}\{x_T\}]^T.
+\end{equation}
+Hence we can denote the real-valued codebook as 
+\[
+C_R(\mathcal{X}', 2T) = \{\ux | \bm{x} \in C \}
+\]
+For $M^2$-ary square QAM, we have $\ux \in C_R(\mathcal{X}', 2T)$ where $\mathcal{X}'$ is an $M$-ary PAM constellation.  For the remainder of the paper we abbreviate $C_R(\mathcal{X}', 2T)$ to $C_R$.
+
+The GLRT-optimal estimate of $\bm{x}$ is
+\begin{equation}
+\uhx^{\text{opt}} = \arg\max_{\uhx|\bm{\hat{x}} \in C(\mathcal{X}, T )} \cos^2{\theta(\uhx,\bm{P}(\bm{y})\uhx) }
+\label{eq_objfn}
+\end{equation}
+where $\theta(\bm{x},\bm{y})$ is the principal angle between vectors $\bm{x}$ and $\bm{y}$, $\bm{P}(\bm{y})$ is the projection matrix
+\[
+\bm{P}(\bm{y}) = \frac{\uY\uY^T}{||\bm{y}||^2}
+\]
+and $\uY$ is the matrix
+\begin{equation} \label{eq_Y}
+\uY = \left[ \begin{array}{rrrrr}
+\text{Re}\{y_1\} & \text{Im}\{y_1\} & . . .  & \text{Re}\{y_T\} &  \text{Im}\{y_T\} \\
+-\text{Im}\{y_1\} & \text{Re}\{y_1\} & . . .  & -\text{Im}\{y_T\} &  \text{Re}\{y_T\} 
+\end{array} \right]^T.
+\end{equation}
+
+Two forms of ambiguity exist for this noncoherent detection problem.  The first is
+the phase ambiguity which occurs for any constellation that is invariant to a particular phase rotation.  For square QAM the following four optimal channel estimates and codeword pairs have the same likelihood, $(h^{\text{opt}}, \bm{\hat{x}}^{\text{opt}})$, $(-h^{\text{opt}}, -\bm{\hat{x}}^{\text{opt}})$, $(-ih^{\text{opt}}, i\bm{\hat{x}}^{\text{opt}})$ and $(ih^{\text{opt}}, -i\bm{\hat{x}}^{\text{opt}})$.  These correspond to rotations of the codeword by $e^{i\pi/2}$.  This is called the \emph{$\pi/2$ phase ambiguity}.  As in \cite{Ryan2007}, we will assume that this form of ambiguity can be resolved by using the phase of the last symbol from the previous codeword \cite{Chen2003,Warrier2002}, or by using differential encoding \cite{Weber1978}.  The second form of ambiguity occurs when points in $C_R$  occur on the same 1-dimensional complex subspace eg. $[1,1,1,1]$, $[3,1,3,1]$ and $[3,3,3,3]$ for $16$-ary QAM with block length $T=2$.  This produces a lower bound on the noncoherent block detection error rate \cite{Ryan2006}.
+
+The objective function \eqref{eq_objfn} has the following geometric interpretation: $\uhx^{\text{opt}}$ is the codeword in $C_R$ of minimal angle to the plane $\uY \reals^2$.  Using this interpretation Ryan \emph{et al.} developed the LBOD and LBSD algorithms which we describe briefly.  We will first reiterate some results from \cite{Ryan2007} and derive some necessary properties.
+
+
+\section{Preliminary Definitions} \label{prelim_defns}
+
+\begin{definition}
+Let $NN(\bm{v})$ be the nearest codeword, or set of codewords, in $C_R$ to $\bm{v}$.  This is: if $\ux \in NN(\bm{v})$ then $||\ux - \bm{v}|| \leq ||\bm{d}-\bm{v}||$ for any $\bm{d} \in C_R$.
+\end{definition}
+
+\begin{definition} \label{ncr}
+Let ${\mathcal N}$ be the set of codewords nearest to the subspace $\uY \reals^2$.  That is $\ux \in {\mathcal N}$ if and only if there exists $\bm{\lambda} \in \reals^2$ such that $\ux \in NN(\uY\bm{\lambda})$.
+\end{definition}
+
+\begin{definition} \label{V}
+Let $V(\ux) \subset \reals^{2T}$ where $\ux \in C_R$ such that $\bm{v} \in V(\ux) \Rightarrow \ux \in NN(\bm{v})$.  $V(\ux)$ is the Voronoi region of the codeword $\ux$.
+\end{definition}
+
+\begin{definition} \label{G}
+\[
+G(\ux) = V(\ux) \cap \uY\reals^2
+\]
+\end{definition}
+
+$G(\ux)$ is region of the plane $\uY\reals^2$ that is closest to the codeword $\ux$.  $G(\ux) \neq \emptyset$ if and only if $\ux \in {\mathcal N}$.  %$G(\ux)$ is the intersection of the Voronoi regions with the plane $\uY\reals^2$.
+
+We define the set ${\mathcal T} = \{1,...,2T\}$ and the set ${\mathcal K} = \{-M+2,-M+4,...,M-2\}$.
+
+\begin{definition}
+For $t \in {\mathcal T}$ and $k \in {\mathcal K}$ we define the line,
+\[
+L(k,t) = \{\uY\bm{\lambda} | \bm{\lambda} \in \reals^2, \lambda_1\ueY_{t,1} + \lambda_2\ueY_{t,2} = k\}
+\]
+\end{definition}
+
+$L(k,t)$ is the boundary in the plane $\uY\reals^2$ where the $t$th element in the codeword changes from $\uex_t = k-1$ to $\uex_t = k+1$.  Figure \ref{fig_lines} is an example of the lines $L(k,t)$ and the regions $G(\ux)$ in the plane $\uY\reals^2$.
+
+\begin{remark} \label{Gx_and_L}
+The boundaries of the non-empty $G(\ux)$ are defined by some set of the lines $L(k,t)$.
+\end{remark}
+
+\begin{figure}[htb]
+	\centering
+		\includegraphics[width=\linewidth]{code/data/drawlines-1.mps}
+		\caption{The lines $L(k,t)$ in the plane $\underline{\bm{Y}} \reals^2$ where $\bm{y} =
+[-0.1076 - 0.4728i, -0.7002 - 0.0968i, -1.1228 + 0.4955i]^T$. }
+		\label{fig_lines}
+\end{figure}
+
+\section{Existing Detectors} \label{existingest}
+
+\subsection{Lattice Based Optimal Detector (LBOD)} \label{T3optimal}
+
+Ryan \emph{et al.} \cite{Ryan2007} show that the optimal estimate lies in the set ${\mathcal N}$.  For LBOD the likelihood of all codewords in the set, ${\mathcal N}$ is evaluated.  This is a significant reduction when compared to evaluating the likelihood of \emph{all} codewords in $C_R$ and yet the optimal estimate is still guaranteed to be found.  In order to evaluate the codewords in ${\mathcal N}$ the position of the vertices of every non-empty region $G(\ux)$ is calculated as the position of the intersection of every pair of lines $L(k,t)$ and $L(k',t')$ for $k,k' \in {\mathcal K}$ and $t,t' \in {\mathcal T}$.
+
+Given the position of a vertex a small translation in an arbitrary direction is added and the nearest codeword is calculated.  The translation is required so that a unique nearest codeword exists.  Ryan \emph{et al.} state that provided the translation is made sufficiently small then the algorithm is guaranteed to find the optimal estimate.
+
+Using the $\pi/2$ phase ambiguity, Ryan \emph{et al.} also note that only 1/4 of the vertices need to be tested.  Specifically only codewords in a single quadrant of the plane $\uY\reals^2$ need to be tested.
+
+The algorithm was shown to test $O(M^2T^2)$ vertices.  It requires $O(T)$ to test the likelihood of the codewords at a vertex.   The overall complexity is $O(M^2T^3)$.
+
+
+\subsection{Lattice Based Sub-optimal Detector (LBSD)} \label{T2logTsuboptimal}
+
+Rather than evaluating every codeword in ${\mathcal N}$, LBSD considers the codewords that pass close to a finite number of lines lying in the plane $\uY\reals^2$.  By using lines the likelihood of each tested codeword can be evaluated in $O(\log{T})$ computations, an improvement on the $O(T)$ computations required for LBOD.  Ryan \emph{et al.} suggest using lines that radiate outward from the origin and lie in the first quadrant of the plane $\uY\reals^2$.
+
+One difficulty with this approach is that it is not known how many lines are needed so that the optimal codeword will be found.  It was conjectured that $O(T)$ lines are needed.  For $T=3$ and $7$ and for 16-QAM, Ryan \emph{et al.} indicate that as little as $4$ lines gives near optimal results.
+
+It was shown that each line passes through $O(T)$ codewords.  Each line therefore requires $O(T\log{T})$ calculations.  If we assume that $O(T)$ lines are required to give reasonable results then the order of complexity is $O(T^2\log{T})$.
+ 
+ 
+\section{Fast Optimal Detector} \label{new_algorithm}
+
+In LBSD, the position of the line searches performed across the plane were chosen to radiate from the origin of the plane in an attempt to enumerate the optimal codeword. For FOD we instead position the line searches across the plane along the intersection of the plane with the nearest neighbour boundaries of each codeword, this is, we will use the lines $L(k,t)$ for $k \in {\mathcal K}$ and $t \in {\mathcal T}$.  This results in a criss-crossing of lines across the plane as seen in Figure \ref{fig_lines}. We show that this approach is sufficient to guarantee optimality, while maintaining the same complexity as the LBSD algorithm \emph{i.e.} $O(T^2\log{T})$.
+
+\subsection{Theory}
+
+\begin{definition} We define
+\[
+\vartheta(k, t) = \{\ux | \ux \in NN(\bm{d}), \bm{d} \in L(k,t) \}
+\]
+\emph{i.e.} this is the set of codewords that are nearest neighbours to the line $L(k,t)$.
+\end{definition}
+
+We now present the following theorem which relates $\vartheta(k,t)$ to $\cal{N}$.  The relationship will be used in our new algorithm.
+
+\begin{theorem} \label{line_search_valid}
+\[
+\ux \in \bigcup_{k \in {\mathcal K}}\bigcup_{t \in {\mathcal T}}{\vartheta(k, t)} \Leftrightarrow \ux \in {\mathcal N}
+\]
+\end{theorem}
+\begin{IEEEproof}
+For the forward implication
+\[
+\ux \in \bigcup_{k \in {\mathcal K}}\bigcup_{t \in {\mathcal T}}{\vartheta(k, t)} \Rightarrow \ux \in \vartheta(k, t) \Rightarrow \ux \in NN(\bm{d})
+\]
+for some $\bm{d} \in L(k,t)$, $k \in {\mathcal K}$ and $t \in {\mathcal T}$.  This implies that there exists $\bm{\lambda}\in\reals^2$ such that $\ux \in NN(\uY\bm{\lambda})$.  Using Definition \ref{ncr} it follows that $\ux \in {\mathcal N}$.
+
+For the reverse implication, it is a consequence of Definition \ref{G} that
+\[
+\ux \in {\mathcal N}(C_R,\uY) \Rightarrow G(\ux) \neq \emptyset.
+\]
+
+From Remark \ref{Gx_and_L} we know that the boundary of $G(\ux)$ is defined by the lines $L(k,t)$.  Selecting $\bm{d} \in L(k,t)$ such that $\bm{d}$ lies on the boundary of $G(\ux)$ yields
+\[
+\ux \in NN(\bm{d}) \Rightarrow \ux \in \bigcup_{k \in {\mathcal K}}\bigcup_{t \in {\mathcal T}}{\vartheta(k, t)}.
+\]
+\end{IEEEproof}
+
+Theorem \ref{line_search_valid} implies that in order to evaluate the likelihood of all codewords in ${\mathcal N}$, we may instead evaluate the likelihood of the codewords in
+\begin{equation} \label{eq_bigsearch}
+\bigcup_{k \in {\mathcal K}}\bigcup_{t \in {\mathcal T}}{\vartheta(k, t)}
+\end{equation}
+and the optimal estimate is still guaranteed to be found.
+
+\subsection{Computational Complexity}
+
+The number of lines, $L(k,t)$, required is $|{\mathcal K}||{\mathcal T}| = 2T(M-1)$.  Each line contains $(M-1)(T-1)$ intersections and so $|\vartheta(k,t)| = M(T-1)$.  Therefore for each line $M(T-1)$ codewords need to be evaluated.  Each evaluation requires $O(\log{T})$ arithmetic computations.  The overall complexity is then $2 MT(T-1)(M-1) O(\log{T}) = O(M^2T^2\log{T})$.
+
+By using the $\pi/2$ phase ambiguity the number of computations can be quartered.  For brevity we shall not detail how this is achieved here.
+
+\subsection{Pseudocode}
+
+The algorithm is implemented similarly to the LBSD algorithm, however, the lines that are searched are now the $L(k,t)$ rather than lines that radiate from the origin.
+
+Pseudocode for the new algorithm is given in Figure \ref{alg_main}.  We use $\uhx$ and $\bm{\hat{x}}$ interchangeably.  They are the same variable, but $\bm{\hat{x}}$ is to be considered as a complex vector and $\uhx$ the corresponding real vector according to \eqref{eq_underline_operator}.
+ 
+The function \texttt{modifiedLBSD}($\uY, k,t$) is a modified version of the LBSD line searching algorithm \cite{Ryan2007}. The function $[L,\bm{\lambda},\gamma] = $ \texttt{modifiedLBSD}($\uY, k,t$) evaluates the likelihood of all codewords in $\vartheta(k,t)$ and returns three values $L, \bm{\lambda}$ and $\gamma$.  The returned value $L$ is the likelihood of the \emph{best} codeword in $\vartheta(k,t)$.  The returned value $\bm{\lambda}$ is the position on the plane $\uY\reals^2$ where the best codeword in $\vartheta(k,t)$ is a nearest neighbour.  Note that $\uY \bm{\lambda} \in L(k,t)$ and so $NN(\uY \bm{\lambda})$ will contain 2 elements corresponding to codewords from both sides of $L(k,t)$, ie. for $x_t = k+1$ or $k-1$.  The returned value $\gamma$ is used to store either $k+1$ or $k-1$, depending on which side of $L(k,t)$ the best codeword is.
+
+There are two trivial but necessary modifications to the LBSD line searching algorithm for it to perform the operations of \texttt{modifiedLBSD}($\uY, k,t$).  Firstly, the original LBSD algorithm only uses lines that pass through the origin.  However, the $L(k,t)$ do not necessarily pass though the origin.  \texttt{modifiedLBSD}($\uY, k,t$) is generalized to allow lines that do not pass through the origin.  Secondly \texttt{modifiedLBSD}($\uY, k,t$) is required to check the codeword on both sides of the line $L(k,t)$ whereas the original LBSD algorithm is not.
+
+Full pseudocode for the \texttt{modifiedLBSD}($\uY, k,t$) function is provided in the appendix.
+
+\begin{algorithm}
+\DontPrintSemicolon
+\SetKwComment{Comment}{//}{}
+$L^{\text{opt}} = -\infty$ \;
+\For{$t = 1$ \emph{\textbf{to}} $2T$ \emph{\textbf{step}} $1$}{ 
+	\For{$k = 0$ \emph{\textbf{to}} $M-2$ \emph{\textbf{step}} $1$}
+	{
+		$[L,\bm{\lambda},\gamma] =$ modifiedLBSD($\uY, k,t$) \;
+		\If{$L > L^{\text{opt}}$}{
+			$L^{\text{opt}} = L$ \;
+			$\bm{\lambda}^{\text{opt}} = \bm{\lambda}$ \;
+	    $t^{\text{opt}} = t$ \;
+	    $\gamma^{\text{opt}} = \gamma$ \;
+		}
+		
+	}        
+}
+$\uhx^{\text{opt}} = NN(\uY \bm{\lambda}^{\text{opt}})$ \;
+$\uehx^{\text{opt}}_{t^{\text{opt}}} = \gamma^{\text{opt}}$ \;
+\Return{ $\bm{\hat{x}}^{\emph{\text{opt}}}$ }
+\caption{GLRT-optimal square QAM Algorithm}
+\label{alg_main}
+\end{algorithm}
+
+\section{Simulation Results} \label{results}
+
+Figure \ref{fig_plot} shows the codeword error rate as a function of signal to noise ratio (SNR) for FOD, LBOD and LBSD with varying values of $T$ and $M$ over a block Rayleigh fading channel where $h$ is i.i.d. circularly symmetric complex Gaussian with unit variance. We have assumed that the phase ambiguities have been removed by some technique \cite{Chen2003, Weber1978}.  It can be seen that all estimators approach the ambiguity lower bound \cite{Ryan2006}.
+
+When $M=4$ it appears that 4 lines are adequate for LBSD to achieve near-optimal results.  When $M=8$ it appears that 7 lines are required. We used this number of lines to generate the results in Figure \ref{fig_plot}.  The relationship between $T$, $M$ and the required number of lines for the suboptimal estimator is not well understood.
+
+Figure \ref{fig_plot2} shows the effect of the number of search lines on the codeword error rate for LBSD when $T=5$ and $M=8$.  Figure \ref{fig_plot2} shows that care must be taken to choose a sufficient number of lines or the results can be poor.  The advantage of FOD over LBSD is that there is no need to choose the number of search lines.  FOD is guaranteed to find the optimal estimate.  Still, LBSD is both computationally very efficient and indistinguishable from optimal when a sufficient number of lines is used.
+
+Table \ref{tab_comptime} shows the number of seconds used to perform 100,000 trials for varying values of $M$ and $T$.  The number of search lines used for LBSD is 4 when $M=4$ and 7 when $M=8$.  The computer used is an Intel Core2 running at 2.13Ghz. 
+
+It is evident that FOD is slower than LBSD and significantly faster than the LBOD.
+
+\begin{figure}[htb]
+	\centering
+		\includegraphics[width=\linewidth]{code/data/plot-1.mps}
+		\caption{Codeword error rate (CER) versus signal to noise ratio (SNR) for varying $T$ and $M$.}
+		\label{fig_plot}
+\end{figure}
+
+\begin{figure}[htb]
+	\centering
+		\includegraphics[width=\linewidth]{code/data/plot-2.mps}
+		\caption{Codeword error rate (CER) versus signal to noise ratio (SNR) for $T=5$ and $M=8$ and for varying number of search lines for LBSD}
+		\label{fig_plot2}
+\end{figure}
+
+%\begin{table}[htbp]
+%\begin{center}
+%\begin{tabular}{l|c|c|c|c|c}
+% & $T=3$ & $T=5$ & $T=7$ & $T=3$ & $T=5$\\
+% & $M=4$ & $M=4$ & $M=4$ & $M=8$ & $M=8$\\ \hline
+%LBSD & 17.83 & 19.22 & 22.27 &  &  \\ \hline
+%FOD & 19.72 & 30.38 & 29.94 &  &  \\ \hline
+%LBOD & 39.14 & 192.75 & 87.67 &  &  \\
+%\end{tabular}
+%\end{center}
+%\caption{Computation time in seconds for 10000 trials}
+%\label{tab_comptime}
+%\end{table}
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Computation time in seconds for 100,000 trials}
+\begin{tabular}{lccccc}
+ & $T=3$ & $T=5$ & $T=7$ & $T=3$ & $T=5$\\
+ & $M=4$ & $M=4$ & $M=4$ & $M=8$ & $M=8$\\ \toprule
+LBSD & 1.08 & 1.75 & 2.45 & 3.38 & 6.00 \\ 
+FOD & 1.45 & 3.94 & 7.78 & 7.69 & 23.88 \\ 
+LBOD & 15.25 & 70.78 & 192.92 & 48.33 & 227.27  \\ \bottomrule
+\end{tabular}
+\end{center}
+\label{tab_comptime}
+\end{table}
+
+
+\section{Conclusion}
+
+The paper describes a GLRT-optimal algorithm for noncoherent reception of square QAM symbols block-fading AWGN channels.  The algorithm requires $O(T^2\log{T})$ arithmetic computations.  This is an improvement on a previous optimal algorithm that requires $O(T^3)$ arithmetic computations \cite{Ryan2007}.
+
+The paper indicates that optimal noncoherent detection for square QAM is possible in practicable time.
+
+\bibliographystyle{IEEEbib}
+\small
+\bibliography{bib}
+
+\appendix
+{\normalsize
+Full pseudocode for the \texttt{modifiedLBSD}($\uY, k,t$) function is provided in Figure \ref{alg_modLBSD}.  Figure \ref{alg_updateL} contains the function \texttt{updateL}($b$) that is used by \texttt{modifiedLBSD}($\uY,k,t$).}
+
+\begin{algorithm}
+\DontPrintSemicolon
+\SetKwComment{Comment}{//}{}
+\KwIn{$\uY, k, t$}
+$L = -\infty$ \Comment{\textrm{\small{initialise likelihood}}} \;
+	$\bm{d} = \uY[1, \frac{\ueY_{t,1}}{\ueY_{t,2}}]^T$ \Comment{\textrm{\small{$\bm{d} =$ gradient of $L(k,t)$}}}\;
+	$\bm{c} = \uY[0,\frac{k}{ \ueY_{t,2}}]^T$ \Comment{\textrm{\small{$\bm{c} =$ translation of $L(k,t)$}}}\;
+		
+		${\mathcal V} = \emptyset$ \Comment{\textrm{\small{calculate crossing of line $L(k,t)$}}}\; 
+		\For{$j = 0$ \emph{\textbf{to}} $2T-1$}{
+    	\If{$j \neq t$}{
+	      \For{$m = -M+2$ \emph{\textbf{to}} $M-2$ \emph{\textbf{step}} $2$}{
+	      		$b = (m-c_j)/d_j$ \;
+	          ${\mathcal V} = \{{\mathcal V}, \{b, j\}\}$ \;
+	      }   
+      }
+    }
+    ${\mathcal V} = $ sort(${\mathcal V}$)  \Comment{\textrm{\small{sort crossings in ascending order of $b$}}} \;		
+    
+    $\bm{s} = \sign{\bm{d}}$\;
+		${\uhx} = -\bm{s}(M-1)$ \Comment{\textrm{\small{initial codeword}}}\;
+		$\uehx_t = k + 1$ \;
+				
+		$\alpha = \bm{\hat{x}}^{\dag}\bm{y}$ \;
+		$\beta = ||\bm{\hat{x}}||^2$ \;
+				
+		updateL(${\mathcal V}_{1,1} - 1.0$) \;
+		
+		\Comment{\textrm{\small{for all crossings of $L(k,t)$}}}\;
+		\For{$m = 1$ \emph{\textbf{to}} $|{\mathcal V}|-1$}{
+			$t' = {\mathcal V}_{m,2}$ \;
+			
+      $\beta = \beta + 4s_{t'}\uex_{t'} + 4$ \;
+      $\alpha = \alpha + 2s_{t'}\ueY_{t',1} - 2is_{t'}\ueY_{t',2}$ \;
+      $\uex_{t'} = \uex_{t'} + 2s_{t'}$ \;
+			
+			\If{$k \neq 0$ or $t' \neq 0$ or ${\mathcal V}_{m+1,2} \neq 0$}{	
+				updateL($({\mathcal V}_{m,1} + {\mathcal V}_{m+1,1})/2$) \;
+			}
+			
+		}
+		
+		$t' = {\mathcal V}_{|{\mathcal V}|,2}$ \;
+		
+    $\beta = \beta + 4s_{t'}\uex_{t'} + 4$ \;
+    $\alpha = \alpha + 2s_{t'}\ueY_{t',1} - 2is_{t'}\ueY_{t',2}$ \;
+    $\uex_{t'} = \uex_{t'} + 2s_{t'}$ \;
+		
+		updateL(${\mathcal V}_{1,1} + 1.0$) \; 
+		
+\Return{ $[L,\bm{\lambda},\gamma]$ }
+\caption{$[L,\bm{\lambda},\gamma] = $ \texttt{modifiedLBSD}($\underline{\bm{Y}}, k,t$) function}
+\label{alg_modLBSD}
+\end{algorithm}
+
+\begin{algorithm}
+\DontPrintSemicolon
+\KwIn{$b$}
+	\If{$L < |\alpha|^2/\beta$}{
+		$L = |\alpha|^2/\beta$ \;
+		$\bm{\lambda} = [ b, \frac{b\ueY_{t,1}+k}{\ueY_{t,2}}]^T$ \;
+		$\gamma = k+1$ \;
+	}
+	\If{$L < |\alpha - 2\ueY_{t,1} + 2i\ueY_{t,2}|^2/(\beta - 4x_t + 4)$}{
+		$L = |\alpha - 2\ueY_{t,1} + 2i\ueY_{t,2}|^2/(\beta - 4x_t + 4)$ \;
+		$\bm{\lambda} = [ b, \frac{b\ueY_{t,1}+k}{\ueY_{t,2}}]^T$ \;
+		$\gamma = k-1$ \;
+	} 
+\caption{\texttt{updateL}($b$) function}
+\label{alg_updateL}
+\end{algorithm}
+
+\end{document}
